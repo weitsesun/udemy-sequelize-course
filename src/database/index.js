@@ -1,5 +1,6 @@
 import cls from 'cls-hooked'
 import { Sequelize } from 'sequelize'
+import { registerModels } from '../models'
 
 export default class Database {
   constructor(environment, dbConfig) {
@@ -35,8 +36,8 @@ export default class Database {
       )
     }
 
-    // TODO: Register the models
-    // registerModels(this.connection)
+    // Register the models
+    registerModels(this.connection)
 
     // Sync the models
     await this.sync()
