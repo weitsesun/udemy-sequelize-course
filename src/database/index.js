@@ -15,9 +15,8 @@ export default class Database {
     Sequelize.useCLS(namespace);
 
     // Create the connection
-    const { username, password, host, port, database, dialect } = this.dbConfig(
-      this.environment
-    );
+    const { username, password, host, port, database, dialect } =
+      this.dbConfig[this.environment];
     this.connection = new Sequelize({
       username,
       password,
