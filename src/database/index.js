@@ -11,6 +11,7 @@ export default class Database {
 
   async connect() {
     // Set up the namespace for transactions -- cls-hooked
+    // if there's an error, entire request will fall back
     const namespace = cls.createNamespace('transactions-namespace');
     Sequelize.useCLS(namespace);
 
