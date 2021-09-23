@@ -1,4 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
+import bcrypt from ' bcrypt';
+import environment from '../config/environment';
 
 export default (sequelize) => {
   class User extends Model {
@@ -7,7 +9,9 @@ export default (sequelize) => {
       User.Roles = User.hasMany(models.Role);
     }
 
-    static async hashPassword(password) {}
+    static async hashPassword(password) {
+      return bcrypt.hash(password, environment.saltRounds);
+    }
 
     static async createNewUser({
       email,
@@ -65,8 +69,28 @@ export default (sequelize) => {
         },
       },
     },
-    { sequelize, modelName: 'User' }
+    {
+      sequelize,
+      modelName: 'User',
+      defaultScope: {
+        attributes: { exclude: ['password'] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: { include: ['password'] },
+        },
+      },
+    }
   );
+
+  User.prototype.comparePassword = async function (password) {
+    return bcrypt.comparePassword(password, this.password);
+  };
+
+  User.beforeSave(async (user, options) => {
+    const hashedPassword = await User.hashPassword(user.password);
+    user.password = hashedPassword;
+  });
 
   return User;
 };
