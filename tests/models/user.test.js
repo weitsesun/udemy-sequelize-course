@@ -112,10 +112,10 @@ describe('User', () => {
         expect(error.errors.length).toEqual(1);
 
         const errorObj = error.errors[0];
+        expect(errorObj.path).toEqual('username');
         expect(errorObj.message).toEqual(
           'Username must contain between 2 and 50 characters'
         );
-        expect(errorObj.path).toEqual('username');
       });
     });
   });
