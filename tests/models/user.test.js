@@ -142,4 +142,21 @@ describe('User', () => {
       });
     });
   });
+
+  describe('instance methods', () => {
+    describe('comparePassword', () => {
+      let password = 'Test123#';
+      let user;
+      beforeEach(async () => {
+        user = await TestHelpers.createNewUser({ password });
+      });
+
+      it('should return true if the password is correct', async () => {
+        const { User } = models;
+        const userFound = await User.scope('withPassword').findByPk(user.id);
+        const isPasswordCorrect = await userFound.comparePasswords(password);
+        expect(isPasswordCorrect).toEqual(true);
+      });
+    });
+  });
 });

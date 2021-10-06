@@ -107,8 +107,8 @@ export default (sequelize) => {
     }
   );
 
-  User.prototype.comparePassword = async function (password) {
-    return bcrypt.comparePassword(password, this.password);
+  User.prototype.comparePasswords = async function (password) {
+    return bcrypt.compare(password, this.password);
   };
 
   User.beforeSave(async (user, options) => {
