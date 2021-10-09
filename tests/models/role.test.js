@@ -10,7 +10,6 @@ describe('role', () => {
     await TestHelpers.stopDb();
   });
 
-  // drop the table before each test and use the model definition
   beforeEach(async () => {
     await TestHelpers.syncDb();
   });
